@@ -1,0 +1,42 @@
+<div class="uk-card uk-card-body">
+  <header class="uk-card-header">
+    <button class="uk-button" [routerLink]="'/home'">Home</button>
+  </header>
+
+  <form class="uk-form-stacked" [formGroup]="recordForm" (submit)="saveRecord()">
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-date-select">Дата</label>
+      <div class="uk-form-controls">
+        <input formControlName="date" name="date" class="uk-input" id="form-date-select" type="datetime-local" placeholder="{{ now() }}">
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-master-select">Мастер</label>
+      <div class="uk-form-controls">
+        <select class="uk-select" id="form-master-select" name="master" formControlName="masterId">
+          <option *ngFor="let master of masters()" [ngValue]="master.id ">{{ master.fullName }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-service-select">Услуга</label>
+      <div class="uk-form-controls">
+        <select class="uk-select" id="form-service-select"  name="service" formControlName="serviceId">
+          <option *ngFor="let service of services()" [ngValue]="service.id">{{ service.name }}</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div>
+      <p>Стоимость</p>
+      <p class="uk-text-muted" [hidden]="!saveButtonDisable">Введите все данные в форме</p>
+      <p class="uk-text-primary" [hidden]="saveButtonDisable">{{calcCost()}} руб.</p>
+    </div>
+
+    <button class="uk-button uk-button-default" [disabled]="saveButtonDisable" type="submit">Сохранить</button>
+  </form>
+</div>

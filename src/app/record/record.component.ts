@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {StorageService} from "../storage/storage.service";
+import {Schedule} from "../record-form/record-form.component";
+import {addMinutes} from "../util/add-min";
 
 export interface Record {
   date: Date;
@@ -7,43 +10,43 @@ export interface Record {
   cost: number;
 }
 
+export interface User {
+  id: number;
+  phone: string;
+  password: string;
+  fullName: string;
+}
+
 @Component({
   selector: 'app-record',
   templateUrl: './record.component.html',
-  styleUrls: ['./record.component.scss']
 })
-export class RecordComponent implements OnInit {
-  records: Record[] = [
-    {
-      date: new Date(),
-      master: 'Ойбек Муслимов',
-      service: 'Стрижка',
-      cost: 2000,
-    },
-    {
-      date: new Date(),
-      master: 'Стас Угольников',
-      service: 'Стрижка',
-      cost: 2000,
-    },
-    {
-      date: new Date(),
-      master: 'Алексей Москвинов',
-      service: 'Стрижка',
-      cost: 2000,
-    },
-    {
-      date: new Date(),
-      master: 'Илья Шевчук',
-      service: 'Стрижка',
-      cost: 2000,
-    }
-  ]
+export class RecordComponent {
+  constructor(private readonly storageService: StorageService) { }
 
+  records(): Record[] {
+    const schedule = this.storageService.schedules();
+    const currentUser = this.storageService.getCurrentUser();
+    const currentUserSchedule = schedule.filter((s) => s.userId === currentUser.id);
 
-  constructor() { }
+    console.log(currentUserSchedule);
 
-  ngOnInit(): void {
+    return currentUserSchedule.map((s) => {
+      const {serviceId, masterId, date} = s;
+      const master = this.storageService.findMasterById(masterId);
+
+      console.log(master);
+
+      const cost = master.services.find(s => s.serviceId === serviceId)!.cost;
+
+      return {
+        service: this.storageService.findServiceById(serviceId).name,
+        cost,
+        master: master.fullName,
+        date: date,
+      } as Record;
+    })
   }
+
 
 }

@@ -1,0 +1,22 @@
+<div class="uk-align-center uk-card uk-card-body uk-position-center">
+  <h1>Вход/Регистрация</h1>
+
+  <form>
+    <div class="uk-margin">
+      <div class="uk-inline">
+        <input class="uk-input" placeholder="Номер телефона" type="text" name="phone" [(ngModel)]="form.phone">
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <div class="uk-inline">
+        <input class="uk-input" placeholder="Пароль" type="text" name="password" [(ngModel)]="form.password">
+      </div>
+    </div>
+  </form>
+
+  <div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-margin-small-right" (click)="login()">Войти</button>
+    <button class="uk-button" disabled>Зарегистрироваться</button>
+  </div>
+</div>
